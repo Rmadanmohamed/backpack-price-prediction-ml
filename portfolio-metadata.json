@@ -1,0 +1,12 @@
+{
+  "repo": "backpack-price-prediction-ml",
+  "title": "Backpack Price Prediction ML",
+  "category": "Data-Science-Projects",
+  "description": "A regression notebook for backpack price prediction using tabular product data and classical machine learning models.",
+  "topics": [
+    "data-science",
+    "regression",
+    "machine-learning",
+    "pricing"
+  ]
+}
