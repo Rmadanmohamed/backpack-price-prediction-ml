@@ -7,8 +7,7 @@ Estimate backpack prices from tabular product attributes and produce an experime
 ## Technology stack and prerequisites
 
 - Python 3 (exact version not specified); a Python notebook environment is required.
-- Declared dependencies in [requirements.txt](requirements.txt): matplotlib, numpy, pandas, scikit-learn, seaborn. All are unpinned.
-- Additional import not declared directly in the manifest: scipy (version unspecified).
+- Declared dependencies in [requirements.txt](requirements.txt): matplotlib, numpy, pandas, scikit-learn, seaborn, scipy. All are unpinned.
 - Google Colab or local Jupyter; local Jupyter must be installed separately. No GPU or external service is explicitly required.
 
 ## Project structure
@@ -19,11 +18,11 @@ Estimate backpack prices from tabular product attributes and produce an experime
 
 ## Dataset and preprocessing
 
-`train.csv`, `test.csv`, `training_extra.csv` and `sample_submission.csv` under `/content/`. Source and license are unspecified. `Price` is the target; `id` is removed, and categorical product attributes such as `Style`, `Brand` and `Color` are explored. The extra training file is loaded but not used.
+`train.csv`, `test.csv` and `sample_submission.csv` under `/content/`. Source and license are unspecified. `Price` is the target; `id` is removed, and categorical product attributes such as `Style`, `Brand` and `Color` are explored. The unused extra training file is no longer required.
 
 ## Model and workflow
 
-Training drops missing rows, fills test missing values, ordinal-encodes categories with unknown value -1, splits 90/10 (seed 42), mean-imputes training/validation data, and fits `ElasticNet(random_state=42)`. Other classifier imports are not regression models evaluated here.
+Training drops missing target labels, splits 90/10 (seed 42), fits numeric imputation/scaling and categorical imputation/encoding inside a training-only pipeline, and fits `ElasticNet(random_state=42)`. Other classifier imports are not regression models evaluated here.
 
 ## Installation and execution
 
@@ -39,7 +38,7 @@ Activate the environment on Linux/macOS with `source .venv/bin/activate`, or on 
 
 ```bash
 python -m pip install -r requirements.txt
-python -m pip install jupyter scipy
+python -m pip install jupyter
 jupyter notebook notebooks/backpack-price-prediction.ipynb
 ```
 
@@ -51,7 +50,7 @@ None are required by the reviewed notebook. Dataset paths are configured in cell
 
 ## Usage and evaluation
 
-Run cells in order. `model.score(X_train, y_train)` produces training R²; the validation section calculates MSE/RMSE and plots measured versus predicted prices. The final cells generate `submission.csv` with a hardcoded 200,000-row target and -1 padding.
+Run cells in order. `model.score(X_train, y_train)` produces training R²; the validation section calculates MSE/RMSE and plots measured versus predicted prices. After validation the pipeline refits on all labeled data, predicts on external features and maps finite predictions to sample-submission IDs without padding.
 
 ## Testing and validation
 
@@ -63,10 +62,14 @@ No standalone screenshot or verified live demo is included in the repository. An
 
 ## Limitations and next steps
 
-No saved numeric metrics were found. Preprocessing before split may leak information, and test data is not passed through the fitted imputer. Submission padding does not ensure valid predictions. Check schema and row alignment; add reproducible data access and validation.
+No saved numeric metrics were found. The repair branch separates preprocessing from validation and enforces submission ID alignment. Run on the original data to verify performance; add reproducible data access and validation.
 
 ## Author
 
 **Ramadan Mohamed Hassan** — AI Engineer | AI Researcher | AI Automation | LLM & RAG Systems | Machine Learning
 
 [Portfolio](https://ramadan-ai-portfolio.vercel.app/) · [LinkedIn](https://www.linkedin.com/in/ramadan-mohamed-89085a366/) · [GitHub](https://github.com/Rmadanmohamed) · [Email](mailto:ramadanmohameddd3@gmail.com)
+
+## Repair-branch validation status
+
+The changed notebook was statically inspected and saved on a review branch. Original datasets are unavailable to this audit, and no notebook training, test scores, dependency resolution or end-to-end execution is claimed. Dependency versions remain unpinned until a compatible environment can be verified.
