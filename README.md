@@ -1,5 +1,7 @@
 # Backpack Price Prediction ML
 
+> **Phase 2 repair branch:** Set `BACKPACK_DATA_DIR` to the directory containing the original `train.csv`, `test.csv` and `sample_submission.csv`. The unused extra training file is no longer required. The ElasticNet pipeline fits categorical encoding and imputation exclusively on the training fold. Submission predictions are mapped by the original unique IDs, preserving the sample submission order; mismatches fail instead of padding or truncating. Original data and metrics are not verified. The historical description below documents the pre-repair baseline; use the instructions above for the repaired notebook. Full execution and dependency resolution are pending.
+
 ## Overview and problem statement
 
 Estimate backpack prices from tabular product attributes and produce an experimental submission CSV for regression modeling.
